@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mindmap Attacchi con AI Generativa</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f0f0f0;
+        }
+        .mindmap {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .node {
+            margin-bottom: 10px;
+        }
+        .node-content {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            background-color: #f8f8f8;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .node-content:hover {
+            background-color: #e8e8e8;
+        }
+        .node-name {
+            margin-left: 10px;
+            font-weight: bold;
+        }
+        .leaf-node .node-name {
+            font-weight: normal;
+        }
+        .children {
+            margin-left: 20px;
+            display: none;
+        }
+        .info-panel {
+            background-color: #e6f2ff;
+            border: 1px solid #b3d9ff;
+            border-radius: 4px;
+            padding: 10px;
+            margin-top: 5px;
+            margin-left: 20px;
+            display: none;
+        }
+        .title {
+            background-color: #0066cc;
+            color: white;
+            padding: 10px;
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            border-radius: 4px;
+            margin-bottom: 20px;
+        }
+        .active-node {
+            background-color: #d4e9ff;
+        }
+        .prompt-balloon {
+            background-color: #f0f8ff;
+            border: 2px solid #4682b4;
+            border-radius: 15px;
+            padding: 10px;
+            margin-top: 10px;
+            position: relative;
+        }
+        .prompt-balloon::before {
+            content: "";
+            position: absolute;
+            top: -10px;
+            left: 20px;
+            border-width: 0 10px 10px;
+            border-style: solid;
+            border-color: #4682b4 transparent;
+        }
+        .copy-button {
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            padding: 5px 10px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 12px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #f8f8f8;
+            border-top: 1px solid #ddd;
+        }
+        
+        .developed-for {
+            text-align: center;
+            margin-top: 20px;
+        }
+        
+        .logo-text {
+            font-size: 24px;
+            font-weight: bold;
+            margin: 10px auto;
+        }
+
+
+       .search-container {
+    margin-bottom: 20px;
+    text-align: center;
+      }
+
+    #searchInput {
+        padding: 5px;
+        width: 200px;
+    }
+
+    .highlight {
+        background-color: yellow;
+    }
+
+    </style>
+</head>
+<body>
+    <div class="mindmap">
+        <div class="title">Attacchi con AI Generativa</div>
+        <div>
+          <input type="text" id="searchInput" placeholder="Cerca...">
+          <button onclick="performSearch()">Cerca</button>
+        </div>
+        <div id="root"></div>
+    </div>
+
+   
+  
+
+    <script>
+        const attackData = {
+    "Attacchi con AI Generativa": {
+        "Esterni": {
+            "Ingegneria Sociale Avanzata": {
+                "Phishing Iper-personalizzato": {
+                    "spiegazione": "Il phishing iper-personalizzato utilizza AI per creare email altamente personalizzate e convincenti, che mirano a ingannare specifici individui. L'AI analizza i profili social e altre fonti di dati per creare messaggi che sembrano autentici e rilevanti per il destinatario.",
+                    "esempio": "Un attaccante utilizza l'AI per analizzare il profilo LinkedIn di una vittima e invia un'email fingendosi un collega di un'azienda partner, chiedendo di aprire un documento allegato contenente malware.",
+                    "risposta_AI": "Usa un prompt di AI generativa per analizzare email sospette e identificare elementi di phishing. Prompt: 'Analizza questa email per segni di phishing utilizzando tecniche di analisi del linguaggio naturale.'"
+                },
+                "Vishing AI-Powered": {
+                    "spiegazione": "Il vishing AI-powered utilizza la sintesi vocale avanzata per creare chiamate telefoniche false che imitano la voce di persone conosciute dalla vittima. Questi attacchi possono convincere le vittime a rivelare informazioni sensibili o trasferire fondi.",
+                    "esempio": "Un attaccante utilizza l'AI per imitare la voce del CEO di un'azienda, chiamando un dipendente e richiedendo con urgenza il trasferimento di denaro a un conto bancario fraudolento.",
+                    "risposta_AI": "Usa un prompt di AI generativa per verificare l'autenticità delle chiamate sospette confrontando la voce con registrazioni conosciute. Prompt: 'Analizza questa registrazione vocale e confrontala con campioni vocali conosciuti per verificare l'identità.'"
+                },
+                "Deepfake per Impersonificazione": {
+                    "spiegazione": "I deepfake per impersonificazione utilizzano l'AI per creare video falsi ma realistici di persone, permettendo agli attaccanti di impersonare individui per scopi malevoli, come ingannare i sistemi di verifica video o diffondere disinformazione.",
+                    "esempio": "Un attaccante crea un video deepfake del CFO di un'azienda che annuncia falsamente cambiamenti finanziari critici, influenzando negativamente il prezzo delle azioni della società.",
+                    "risposta_AI": "Usa un prompt di AI generativa per analizzare video sospetti e identificare elementi di deepfake. Prompt: 'Analizza questo video per segni di deepfake utilizzando tecniche di analisi video avanzate.'"
+                }
+            },
+            "Automazione e Scalabilità degli Attacchi": {
+                "Fuzzing Intelligente": {
+                    "spiegazione": "Il fuzzing intelligente utilizza algoritmi AI per generare automaticamente una vasta gamma di input casuali o malformati per testare e identificare vulnerabilità nei software.",
+                    "esempio": "Un attaccante utilizza l'AI per automatizzare il processo di fuzzing su un'applicazione web, scoprendo una vulnerabilità zero-day che può essere sfruttata per ottenere l'accesso non autorizzato ai dati degli utenti.",
+                    "risposta_AI": "Usa un prompt di AI generativa per automatizzare il processo di fuzzing su applicazioni sospette. Prompt: 'Genera input casuali per testare vulnerabilità in questa applicazione.'"
+                },
+                "Attacchi DDoS Adattivi": {
+                    "spiegazione": "Gli attacchi DDoS adattivi impiegano l'AI per modificare continuamente i metodi di attacco in risposta alle misure di difesa implementate dalla vittima, rendendo più difficile la mitigazione dell'attacco.",
+                    "esempio": "Un attaccante lancia un attacco DDoS contro un sito web aziendale e utilizza l'AI per cambiare dinamicamente i pattern di traffico, eludendo le difese DDoS tradizionali e causando tempi di inattività prolungati.",
+                    "risposta_AI": "Usa un prompt di AI generativa per monitorare e rispondere a pattern di attacco DDoS adattivi. Prompt: 'Analizza i pattern di traffico e suggerisci misure di difesa contro questo attacco DDoS.'"
+                },
+                "Scanning di Rete Ottimizzato": {
+                    "spiegazione": "Lo scanning di rete ottimizzato utilizza l'AI per analizzare reti complesse e identificare vulnerabilità e punti deboli con maggiore efficienza e precisione rispetto ai metodi tradizionali.",
+                    "esempio": "Un attaccante impiega un sistema di scanning basato su AI per mappare una rete aziendale, identificando rapidamente dispositivi non protetti e servizi vulnerabili da sfruttare.",
+                    "risposta_AI": "Usa un prompt di AI generativa per analizzare reti complesse e identificare vulnerabilità. Prompt: 'Scansiona questa rete e identifica dispositivi non protetti e servizi vulnerabili.'"
+                }
+            },
+            "Evasione dei Sistemi di Sicurezza": {
+                "Malware Polimorfici AI-Driven": {
+                    "spiegazione": "I malware polimorfici AI-driven utilizzano l'intelligenza artificiale per cambiare continuamente il proprio codice e comportamento, eludendo le firme di rilevamento dei software antivirus tradizionali.",
+                    "esempio": "Un attaccante distribuisce un malware che utilizza l'AI per modificare costantemente il proprio codice, rendendo difficile per gli strumenti di sicurezza rilevarlo e neutralizzarlo.",
+                    "risposta_AI": "Usa un prompt di AI generativa per rilevare malware polimorfici. Prompt: 'Analizza questo software per segni di malware polimorfici che cambiano costantemente il loro codice.'"
+                },
+                "Elusione di Sistemi Biometrici": {
+                    "spiegazione": "L'elusione di sistemi biometrici utilizza tecniche avanzate di AI per ingannare i sistemi di autenticazione biometrica, come il riconoscimento facciale o le impronte digitali.",
+                    "esempio": "Un attaccante utilizza l'AI per creare un'immagine falsa ma convincente del volto di un utente autorizzato, superando i sistemi di riconoscimento facciale di un'azienda per ottenere accesso non autorizzato.",
+                    "risposta_AI": "Usa un prompt di AI generativa per testare la robustezza dei sistemi biometrici. Prompt: 'Analizza questo sistema biometrico e verifica se può essere eluso con tecniche avanzate di AI.'"
+                },
+                "Attacchi di Evasione contro ML di Sicurezza": {
+                    "spiegazione": "Gli attacchi di evasione contro i sistemi di machine learning di sicurezza manipolano i dati di input per ingannare i modelli di machine learning, facendo in modo che non riconoscano attività malevole.",
+                    "esempio": "Un attaccante modifica leggermente i dati di input utilizzati per il rilevamento delle intrusioni, causando il fallimento del modello di machine learning nel rilevare attività sospette.",
+                    "risposta_AI": "Usa un prompt di AI generativa per testare la robustezza dei modelli di machine learning di sicurezza. Prompt: 'Modifica questi dati di input per verificare se il modello di sicurezza riesce ancora a rilevare attività malevole.'"
+                }
+            },
+            "Attacchi alla Supply Chain": {
+                "Generazione di Codice Malevolo in Librerie Open Source": {
+                    "spiegazione": "La generazione di codice malevolo in librerie open source implica l'inserimento di codice dannoso in progetti open source utilizzati da molte organizzazioni, compromettendo indirettamente tutte le applicazioni che dipendono da tali librerie.",
+                    "esempio": "Un attaccante contribuisce con codice a una popolare libreria open source che contiene una backdoor nascosta, permettendo l'accesso non autorizzato a tutte le applicazioni che la utilizzano.",
+                    "risposta_AI": "Usa un prompt di AI generativa per analizzare librerie open source per codice malevolo. Prompt: 'Analizza questa libreria open source per verificare la presenza di codice malevolo.'"
+                },
+                "Impersonificazione di Fornitori Fidati": {
+                    "spiegazione": "L'impersonificazione di fornitori fidati utilizza tecniche di AI per creare comunicazioni false che sembrano provenire da fornitori legittimi, convincendo le vittime a eseguire azioni dannose.",
+                    "esempio": "Un attaccante invia email fraudolente, apparentemente provenienti da un fornitore di fiducia, con istruzioni per il pagamento su un conto bancario controllato dall'attaccante.",
+                    "risposta_AI": "Usa un prompt di AI generativa per analizzare comunicazioni sospette da fornitori fidati. Prompt: 'Analizza questa email per segni di impersonificazione utilizzando tecniche di analisi del linguaggio naturale.'"
+                }
+            },
+             "Manipolazione dell'Opinione Pubblica e del Mercato": {
+        "Campagne di Disinformazione Mirate": {
+            "spiegazione": "Le campagne di disinformazione mirate utilizzano AI per creare e diffondere informazioni false o fuorvianti su larga scala, con l'obiettivo di influenzare l'opinione pubblica o destabilizzare i mercati.",
+            "esempio": "Un gruppo di attaccanti utilizza l'AI per generare notizie false su un candidato politico, diffondendole tramite social media per influenzare negativamente la sua campagna elettorale.",
+            "risposta_AI": "Usa un prompt di AI generativa per identificare campagne di disinformazione. Prompt: 'Analizza questi post sui social media per identificare segni di disinformazione.'"
+        },
+        "Manipolazione del Sentiment di Mercato": {
+            "spiegazione": "La manipolazione del sentiment di mercato utilizza tecniche di AI per analizzare e influenzare le opinioni degli investitori, con l'obiettivo di manipolare il valore delle azioni o di altre attività finanziarie.",
+            "esempio": "Un attaccante utilizza l'AI per generare una serie di post sui social media che elogiano una specifica azione, inducendo un aumento artificiale del suo valore di mercato.",
+            "risposta_AI": "Usa un prompt di AI generativa per monitorare il sentiment di mercato sui social media. Prompt: 'Analizza questi post sui social media per identificare tentativi di manipolazione del sentiment di mercato.'"
+        }
+    },
+    "Agenti Autonomi per Attacchi Esterni": {
+        "Ricognizione Autonoma": {
+            "spiegazione": "La ricognizione autonoma utilizza agenti AI per raccogliere informazioni su obiettivi specifici in modo continuo e senza intervento umano, preparandosi per futuri attacchi.",
+            "esempio": "Un attaccante utilizza un agente AI per monitorare costantemente le reti di un'azienda target, raccogliendo informazioni su dispositivi, utenti e potenziali vulnerabilità.",
+            "risposta_AI": "Usa un prompt di AI generativa per monitorare reti e raccogliere informazioni in modo continuo. Prompt: 'Raccogli informazioni su questa rete e identifica potenziali vulnerabilità.'"
+        },
+        "Orchestrazione di Attacchi Multi-vettore": {
+            "spiegazione": "L'orchestrazione di attacchi multi-vettore utilizza l'AI per coordinare simultaneamente vari tipi di attacchi contro un singolo obiettivo, aumentando l'efficacia complessiva dell'offensiva.",
+            "esempio": "Un attaccante impiega un sistema AI per lanciare contemporaneamente attacchi di phishing, DDoS e sfruttamento di vulnerabilità contro un'azienda, massimizzando il danno.",
+            "risposta_AI": "Usa un prompt di AI generativa per coordinare la difesa contro attacchi multi-vettore. Prompt: 'Suggerisci misure di difesa contro attacchi simultanei di phishing, DDoS e sfruttamento di vulnerabilità.'"
+        },
+        "Social Engineering Automatizzato": {
+            "spiegazione": "Il social engineering automatizzato utilizza l'AI per creare e inviare automaticamente messaggi di ingegneria sociale su larga scala, migliorando la probabilità di successo degli attacchi.",
+            "esempio": "Un attaccante impiega un bot AI per inviare email di phishing personalizzate a migliaia di dipendenti di un'azienda, aumentando le probabilità di ottenere credenziali di accesso valide.",
+            "risposta_AI": "Usa un prompt di AI generativa per identificare messaggi di ingegneria sociale su larga scala. Prompt: 'Analizza queste email per segni di phishing automatizzato.'"
+        },
+        "Exploit Development Autonomo": {
+            "spiegazione": "L'exploit development autonomo utilizza tecniche di AI per identificare automaticamente vulnerabilità nei software e sviluppare exploit per sfruttarle senza intervento umano.",
+            "esempio": "Un attaccante utilizza l'AI per analizzare un'applicazione web e sviluppare automaticamente un exploit per una vulnerabilità non ancora conosciuta.",
+            "risposta_AI": "Usa un prompt di AI generativa per identificare vulnerabilità nei software e sviluppare exploit. Prompt: 'Analizza questa applicazione per vulnerabilità e sviluppa un exploit.'"
+        },
+        "Evasione Adattiva delle Difese": {
+            "spiegazione": "L'evasione adattiva delle difese impiega l'AI per modificare dinamicamente le tecniche di attacco in risposta alle contromisure implementate dalla vittima, rendendo gli attacchi più difficili da bloccare.",
+            "esempio": "Un attaccante lancia un malware che utilizza l'AI per cambiare il proprio comportamento in base alle difese rilevate, eludendo i sistemi di rilevamento delle intrusioni.",
+            "risposta_AI": "Usa un prompt di AI generativa per monitorare e rispondere a tecniche di evasione adattiva. Prompt: 'Analizza questo malware per comportamenti adattivi e suggerisci misure di difesa.'"
+        }
+    }
+},
+
+        "Interni": {
+            "Esfiltrazione Dati Avanzata": {
+                "Query Complesse per Estrazione Dati": {
+                    "spiegazione": "L'esfiltrazione dati avanzata utilizza l'AI per creare query complesse che estraggono dati sensibili da database senza essere rilevati dai sistemi di monitoraggio.",
+                    "esempio": "Un insider malevolo utilizza l'AI per formulare query SQL intricate che estraggono dati finanziari sensibili senza attivare gli allarmi del sistema di sicurezza.",
+                    "risposta_AI": "Usa un prompt di AI generativa per affrontare questo tipo di attacco. Prompt: 'Analizza questa situazione e suggerisci misure di sicurezza o verifica.'"
+                },
+                "Steganografia AI-Assisted": {
+                    "spiegazione": "La steganografia AI-assisted utilizza tecniche avanzate di AI per nascondere dati sensibili all'interno di altri file, come immagini o video, rendendo difficile il rilevamento dell'esfiltrazione.",
+                    "esempio": "Un attaccante interno utilizza l'AI per incorporare dati aziendali critici all'interno di immagini innocue inviate via email, eludendo i sistemi di sicurezza.",
+                    "risposta_AI": "Usa un prompt di AI generativa per affrontare questo tipo di attacco. Prompt: 'Analizza questa situazione e suggerisci misure di sicurezza o verifica.'"
+                },
+                "Generazione di Dati Sintetici": {
+                    "spiegazione": "La generazione di dati sintetici utilizza l'AI per creare dati artificiali che imitano i dati reali, permettendo agli attaccanti di estrarre informazioni sensibili senza essere scoperti.",
+                    "esempio": "Un insider malevolo utilizza l'AI per generare dati sintetici che rappresentano fedelmente i clienti di un'azienda, permettendo la fuoriuscita di informazioni senza sollevare sospetti.",
+                    "risposta_AI": "Usa un prompt di AI generativa per affrontare questo tipo di attacco. Prompt: 'Analizza questa situazione e suggerisci misure di sicurezza o verifica.'"
+                }
+            },
+            "Sabotaggio e Manipolazione Interna": {
+                "Alterazione Sottile di Codice": {
+                    "spiegazione": "L'alterazione sottile di codice utilizza tecniche AI per modificare leggermente il codice di un software in modo da introdurre errori o vulnerabilità difficili da rilevare.",
+                    "esempio": "Un dipendente malevolo utilizza l'AI per inserire impercettibili modifiche nel codice di un'applicazione, causando occasionali malfunzionamenti che compromettono l'affidabilità del software.",
+                    "risposta_AI": "Usa un prompt di AI generativa per affrontare questo tipo di attacco. Prompt: 'Analizza questa situazione e suggerisci misure di sicurezza o verifica.'"
+                },
+                "Manipolazione di Log e Audit Trail": {
+                    "spiegazione": "La manipolazione di log e audit trail impiega l'AI per alterare i registri di sistema e gli audit trail, nascondendo tracce di attività malevole e rendendo difficile la rilevazione di intrusioni.",
+                    "esempio": "Un insider malevolo utilizza l'AI per modificare i log di accesso del sistema, cancellando le tracce delle proprie attività non autorizzate e ingannando i controlli di sicurezza.",
+                    "risposta_AI": "Usa un prompt di AI generativa per affrontare questo tipo di attacco. Prompt: 'Analizza questa situazione e suggerisci misure di sicurezza o verifica.'"
+                },
+                "Creazione di Backdoor Intelligenti": {
+                    "spiegazione": "La creazione di backdoor intelligenti utilizza l'AI per inserire backdoor difficili da rilevare all'interno dei sistemi, permettendo accessi non autorizzati futuri.",
+                    "esempio": "Un dipendente malevolo utilizza l'AI per incorporare una backdoor nascosta nel software aziendale, garantendo l'accesso remoto al sistema anche dopo aver lasciato l'azienda.",
+                    "risposta_AI": "Usa un prompt di AI generativa per affrontare questo tipo di attacco. Prompt: 'Analizza questa situazione e suggerisci misure di sicurezza o verifica.'"
+                }
+            },
+            "Frode e Manipolazione Finanziaria": {
+                "Generazione di Transazioni Fraudolente": {
+                    "spiegazione": "La generazione di transazioni fraudolente utilizza l'AI per creare e mascherare transazioni finanziarie false, permettendo agli attaccanti di sottrarre fondi senza essere rilevati.",
+                    "esempio": "Un dipendente malevolo utilizza l'AI per generare transazioni di piccolo importo che passano inosservate, accumulando gradualmente somme significative nel proprio conto personale.",
+                    "risposta_AI": "Usa un prompt di AI generativa per affrontare questo tipo di attacco. Prompt: 'Analizza questa situazione e suggerisci misure di sicurezza o verifica.'"
+                },
+                "Alterazione di Report Finanziari": {
+                    "spiegazione": "L'alterazione di report finanziari utilizza l'AI per modificare i dati finanziari aziendali, falsificando bilanci e altri documenti per nascondere frodi o manipolare la percezione finanziaria.",
+                    "esempio": "Un attaccante interno utilizza l'AI per alterare i report trimestrali di una società, gonfiando artificialmente i profitti per aumentare il valore delle azioni.",
+                    "risposta_AI": "Usa un prompt di AI generativa per affrontare questo tipo di attacco. Prompt: 'Analizza questa situazione e suggerisci misure di sicurezza o verifica.'"
+                },
+                "Impersonificazione Interna": {
+                    "spiegazione": "L'impersonificazione interna utilizza l'AI per imitare l'identità di dipendenti legittimi all'interno dell'organizzazione, consentendo operazioni fraudolente senza destare sospetti.",
+                    "esempio": "Un insider malevolo utilizza l'AI per imitare l'identità del responsabile finanziario, approvando pagamenti fraudolenti verso conti bancari controllati dall'attaccante.",
+                    "risposta_AI": "Usa un prompt di AI generativa per affrontare questo tipo di attacco. Prompt: 'Analizza questa situazione e suggerisci misure di sicurezza o verifica.'"
+                }
+            },
+            "Evasione dei Controlli di Sicurezza Interni": {
+                "Generazione di Credenziali Valide": {
+                    "spiegazione": "La generazione di credenziali valide utilizza l'AI per creare o rubare credenziali di accesso valide, permettendo agli attaccanti di bypassare i controlli di sicurezza interni.",
+                    "esempio": "Un attaccante interno utilizza l'AI per ottenere le credenziali di accesso di un amministratore di sistema, accedendo così a informazioni sensibili senza essere rilevato.",
+                    "risposta_AI": "Usa un prompt di AI generativa per affrontare questo tipo di attacco. Prompt: 'Analizza questa situazione e suggerisci misure di sicurezza o verifica.'"
+                },
+                "Elusione di Sistemi di Monitoraggio del Comportamento": {
+                    "spiegazione": "L'elusione di sistemi di monitoraggio del comportamento utilizza l'AI per adattare il comportamento degli attaccanti, evitando di attivare gli allarmi dei sistemi di sicurezza basati sul comportamento.",
+                    "esempio": "Un insider malevolo utilizza l'AI per analizzare i pattern di monitoraggio del comportamento e adattare le proprie azioni in modo da non sollevare sospetti.",
+                    "risposta_AI": "Usa un prompt di AI generativa per affrontare questo tipo di attacco. Prompt: 'Analizza questa situazione e suggerisci misure di sicurezza o verifica.'"
+                }
+            },
+            "Spionaggio Industriale": {
+                "Estrazione di Proprietà Intellettuale": {
+                    "spiegazione": "L'estrazione di proprietà intellettuale utilizza l'AI per identificare e sottrarre informazioni sensibili e segreti industriali, causando danni competitivi all'azienda vittima.",
+                    "esempio": "Un attaccante interno utilizza l'AI per identificare documenti contenenti segreti industriali e inviarli a concorrenti, compromettendo il vantaggio competitivo dell'azienda.",
+                    "risposta_AI": "Usa un prompt di AI generativa per monitorare attività sospette legate a proprietà intellettuale. Prompt: 'Analizza queste attività per segni di furto di proprietà intellettuale.'"
+                },
+                "Ricostruzione di Segreti Commerciali": {
+                    "spiegazione": "La ricostruzione di segreti commerciali utilizza tecniche di AI per analizzare informazioni parziali e ricostruire segreti commerciali o tecnologie proprietarie.",
+                    "esempio": "Un insider malevolo utilizza l'AI per analizzare vari frammenti di dati raccolti e ricostruire la formula di un prodotto esclusivo dell'azienda.",
+                    "risposta_AI": "Usa un prompt di AI generativa per identificare tentativi di ricostruzione di segreti commerciali. Prompt: 'Analizza questi dati per identificare tentativi di ricostruzione di segreti commerciali.'"
+                }
+            },
+            "Agenti Autonomi per Minacce Interne": {
+                "Raccolta Dati Intelligente": {
+                    "spiegazione": "La raccolta dati intelligente utilizza agenti AI per monitorare costantemente i sistemi interni e raccogliere informazioni sensibili senza destare sospetti.",
+                    "esempio": "Un agente AI viene impiegato all'interno di un'azienda per raccogliere e trasmettere costantemente dati sui progetti in corso, senza essere rilevato dai sistemi di sicurezza.",
+                    "risposta_AI": "Usa un prompt di AI generativa per monitorare raccolta di dati sospetti. Prompt: 'Monitora queste attività per identificare raccolta dati non autorizzata.'"
+                },
+                "Manipolazione Autonoma dei Processi": {
+                    "spiegazione": "La manipolazione autonoma dei processi utilizza l'AI per alterare in modo automatico i processi aziendali, causando inefficienze o sabotaggi senza intervento umano.",
+                    "esempio": "Un attaccante interno impiega un agente AI per modificare i parametri di produzione di una fabbrica, causando difetti nei prodotti finali e danneggiando la reputazione dell'azienda.",
+                    "risposta_AI": "Usa un prompt di AI generativa per analizzare modifiche sospette nei processi aziendali. Prompt: 'Analizza queste modifiche di processo per identificare manipolazioni non autorizzate.'"
+                },
+                "Creazione Dinamica di Backdoor": {
+                    "spiegazione": "La creazione dinamica di backdoor utilizza l'AI per inserire backdoor nei sistemi aziendali, permettendo accessi futuri non autorizzati e adattandosi ai cambiamenti di sicurezza.",
+                    "esempio": "Un agente AI inserisce dinamicamente backdoor nel software aziendale durante gli aggiornamenti, garantendo l'accesso continuo agli attaccanti anche dopo patch di sicurezza.",
+                    "risposta_AI": "Usa un prompt di AI generativa per identificare backdoor dinamiche. Prompt: 'Analizza questo codice per verificare la presenza di backdoor dinamiche.'"
+                },
+                "Cancellazione Selettiva delle Tracce": {
+                    "spiegazione": "La cancellazione selettiva delle tracce utilizza l'AI per eliminare selettivamente le evidenze di attività malevole, rendendo difficile la rilevazione degli attacchi e l'identificazione dei responsabili.",
+                    "esempio": "Un attaccante interno impiega l'AI per cancellare selettivamente i log delle proprie attività non autorizzate, impedendo agli investigatori di ricostruire l'attacco.",
+                    "risposta_AI": "Usa un prompt di AI generativa per monitorare cancellazione selettiva delle tracce. Prompt: 'Monitora queste attività per identificare cancellazioni selettive di tracce.'"
+                },
+                "Simulazione di Comportamenti Legittimi": {
+                    "spiegazione": "La simulazione di comportamenti legittimi utilizza l'AI per imitare i comportamenti normali degli utenti, mascherando le attività malevole e sfuggendo ai sistemi di rilevamento delle anomalie.",
+                    "esempio": "Un insider malevolo utilizza l'AI per far sembrare che le proprie attività malevole siano operazioni normali eseguite da utenti legittimi, ingannando i sistemi di monitoraggio.",
+                    "risposta_AI": "Usa un prompt di AI generativa per analizzare comportamenti simulati. Prompt: 'Analizza questi comportamenti per identificare simulazioni di attività legittime.'"
+                }
+            }
+        },
+        "Contro Servizi AI": {
+            "Poisoning del Modello": {
+                "Injection di Dati Malevoli": {
+                    "spiegazione": "L'injection di dati malevoli implica l'inserimento di dati manipolati nel dataset di training di un modello AI, compromettendo l'accuratezza e l'affidabilità del modello risultante.",
+                    "esempio": "Un attaccante inietta dati malevoli in un dataset di training per un modello di riconoscimento delle immagini, causando il fallimento del modello nel riconoscere correttamente oggetti specifici.",
+                    "risposta_AI": "Usa un prompt di AI generativa per identificare dati manipolati in un dataset. Prompt: 'Analizza questo dataset per identificare dati iniettati malevolmente.'"
+                },
+                "Manipolazione del Contesto": {
+                    "spiegazione": "La manipolazione del contesto utilizza l'AI per alterare il contesto in cui vengono presentati i dati di input, inducendo il modello AI a fare previsioni errate o comportarsi in modo inaspettato.",
+                    "esempio": "Un attaccante modifica il contesto di input per un chatbot AI, fornendo informazioni ingannevoli che portano il modello a dare risposte fuorvianti o dannose.",
+                    "risposta_AI": "Usa un prompt di AI generativa per verificare la correttezza del contesto dei dati di input. Prompt: 'Analizza questi dati di input per identificare manipolazioni del contesto.'"
+                }
+            },
+            "Estrazione di Informazioni Sensibili": {
+                "Prompt Injection": {
+                    "spiegazione": "La prompt injection implica l'inserimento di comandi nascosti o malevoli nei prompt dati a un modello di linguaggio AI, inducendo il modello a rivelare informazioni sensibili o comportarsi in modo indesiderato.",
+                    "esempio": "Un attaccante inserisce comandi nascosti in un prompt di chat, inducendo il modello AI a rivelare dettagli confidenziali sui dati degli utenti o sulla sua configurazione interna.",
+                    "risposta_AI": "Usa un prompt di AI generativa per verificare la sicurezza dei prompt di input. Prompt: 'Analizza questo prompt per identificare comandi nascosti o malevoli.'"
+                },
+                "Inferenza di Dati di Training": {
+                    "spiegazione": "L'inferenza di dati di training utilizza l'AI per analizzare le uscite di un modello e dedurre informazioni sui dati di training utilizzati, potenzialmente rivelando dati sensibili o proprietari.",
+                    "esempio": "Un attaccante utilizza l'AI per analizzare le risposte di un modello di linguaggio, deducendo dettagli specifici sui dati di training originali, come informazioni personali o segreti aziendali.",
+                    "risposta_AI": "Usa un prompt di AI generativa per identificare tentativi di inferenza di dati di training. Prompt: 'Analizza queste risposte del modello per dedurre informazioni sui dati di training originali.'"
+                }
+            },
+            "Denial of Service": {
+                "Sovraccarico Computazionale": {
+                    "spiegazione": "Il sovraccarico computazionale utilizza l'AI per generare richieste che consumano eccessivamente le risorse computazionali di un sistema AI, degradando le prestazioni o causando interruzioni del servizio.",
+                    "esempio": "Un attaccante lancia un attacco DDoS contro un servizio di riconoscimento vocale basato su AI, inviando un alto volume di richieste complesse che sovraccaricano il sistema e lo rendono inutilizzabile.",
+                    "risposta_AI": "Usa un prompt di AI generativa per monitorare l'uso delle risorse computazionali. Prompt: 'Monitora queste attività per identificare sovraccarichi computazionali sospetti.'"
+                },
+                "Attacchi di Confusione": {
+                    "spiegazione": "Gli attacchi di confusione utilizzano input appositamente progettati per confondere un modello AI, inducendo errori o malfunzionamenti che compromettono l'affidabilità del servizio.",
+                    "esempio": "Un attaccante fornisce input deliberatamente ambigui a un sistema di riconoscimento delle immagini, causando confusione nel modello e portandolo a fare previsioni errate o incoerenti.",
+                    "risposta_AI": "Usa un prompt di AI generativa per analizzare input che potrebbero confondere un modello AI. Prompt: 'Analizza questi input per identificare tentativi di confusione del modello.'"
+                }
+            },
+            "Evasione dei Sistemi di Filtraggio": {
+                "Generazione di Contenuti Nocivi Evasivi": {
+                    "spiegazione": "La generazione di contenuti nocivi evasivi utilizza l'AI per creare contenuti dannosi che aggirano i filtri e i sistemi di moderazione automatica, diffondendo materiale inappropriato o pericoloso.",
+                    "esempio": "Un attaccante utilizza l'AI per generare messaggi di spam che eludono i filtri antispam dei provider di posta elettronica, riuscendo a raggiungere le caselle di posta degli utenti con contenuti dannosi.",
+                    "risposta_AI": "Usa un prompt di AI generativa per monitorare la generazione di contenuti nocivi. Prompt: 'Analizza questi contenuti per identificare tentativi di elusione dei filtri di moderazione.'"
+                },
+                "Jailbreaking": {
+                    "spiegazione": "Il jailbreaking utilizza tecniche di AI per bypassare le restrizioni imposte ai modelli AI, permettendo l'esecuzione di operazioni non autorizzate o l'accesso a funzionalità riservate.",
+                    "esempio": "Un attaccante esegue un jailbreak su un assistente virtuale basato su AI, consentendo l'accesso a comandi di amministrazione e funzionalità non disponibili agli utenti comuni.",
+                    "risposta_AI": "Usa un prompt di AI generativa per identificare tentativi di jailbreaking su modelli AI. Prompt: 'Monitora queste attività per identificare tentativi di jailbreak.'"
+                }
+            },
+            "Reverse Engineering e Furto di Modello": {
+                "Estrazione di Architettura": {
+                    "spiegazione": "L'estrazione di architettura utilizza tecniche di AI per analizzare e replicare la struttura interna di un modello AI, permettendo agli attaccanti di creare copie non autorizzate del modello.",
+                    "esempio": "Un attaccante utilizza l'AI per analizzare le risposte di un modello di riconoscimento vocale, ricostruendo l'architettura e creando una copia illegittima del modello.",
+                    "risposta_AI": "Usa un prompt di AI generativa per identificare tentativi di estrazione dell'architettura di un modello AI. Prompt: 'Monitora queste attività per identificare tentativi di estrazione di architettura.'"
+                },
+                "Ricostruzione Parziale del Modello": {
+                    "spiegazione": "La ricostruzione parziale del modello utilizza l'AI per dedurre parti della struttura e dei parametri di un modello AI, facilitando il reverse engineering e la creazione di versioni modificate.",
+                    "esempio": "Un attaccante utilizza l'AI per analizzare i comportamenti di un modello di linguaggio, ricostruendo parzialmente i parametri del modello e sviluppando una versione modificata.",
+                    "risposta_AI": "Usa un prompt di AI generativa per identificare tentativi di ricostruzione parziale di modelli AI. Prompt: 'Monitora queste attività per identificare tentativi di ricostruzione di modelli AI.'"
+                }
+            },
+            "Manipolazione delle Risposte del Modello": {
+                "Attacchi di Bias Amplification": {
+                    "spiegazione": "Gli attacchi di bias amplification utilizzano l'AI per identificare e amplificare i bias esistenti in un modello AI, causando comportamenti discriminatori o distorti.",
+                    "esempio": "Un attaccante sfrutta i bias presenti in un modello di reclutamento AI, manipolando i criteri di selezione per favorire o sfavorire candidati di specifici gruppi demografici.",
+                    "risposta_AI": "Usa un prompt di AI generativa per identificare e correggere bias amplificati in un modello AI. Prompt: 'Analizza queste risposte del modello per identificare e correggere bias amplificati.'"
+                },
+                "Induzione di Allucinazioni Controllate": {
+                    "spiegazione": "L'induzione di allucinazioni controllate utilizza input manipolati per indurre un modello AI a generare risposte false o fuorvianti, compromettendo l'affidabilità del sistema.",
+                    "esempio": "Un attaccante fornisce input specifici a un chatbot AI, inducendolo a generare risposte completamente inventate e fuorvianti per gli utenti.",
+                    "risposta_AI": "Usa un prompt di AI generativa per identificare allucinazioni controllate in un modello AI. Prompt: 'Analizza queste risposte del modello per identificare allucinazioni controllate.'"
+                }
+            },
+            "Agenti Autonomi contro Servizi AI": {
+                "Probing Continuo dei Modelli": {
+                    "spiegazione": "Il probing continuo dei modelli utilizza agenti AI per testare costantemente i limiti e le vulnerabilità di un modello AI, identificando punti deboli da sfruttare in attacchi futuri.",
+                    "esempio": "Un attaccante impiega un agente AI per inviare continuamente input variabili a un sistema di riconoscimento delle immagini, cercando di identificare schemi che causano errori nel modello.",
+                    "risposta_AI": "Usa un prompt di AI generativa per identificare tentativi di probing continuo su modelli AI. Prompt: 'Monitora queste attività per identificare probing continuo.'"
+                },
+                "Generazione Automatica di Adversarial Inputs": {
+                    "spiegazione": "La generazione automatica di adversarial inputs utilizza l'AI per creare input specifici che inducono errori nei modelli AI, sfruttando vulnerabilità note o sconosciute.",
+                    "esempio": "Un attaccante utilizza un agente AI per generare immagini adversarial che ingannano un sistema di riconoscimento facciale, permettendo l'accesso non autorizzato a individui non riconosciuti.",
+                    "risposta_AI": "Usa un prompt di AI generativa per identificare input adversarial generati automaticamente. Prompt: 'Monitora questi input per identificare tentativi di attacco adversarial.'"
+                },
+                "Orchestrazione di Attacchi Distribuiti": {
+                    "spiegazione": "L'orchestrazione di attacchi distribuiti utilizza agenti AI per coordinare attacchi simultanei da più fonti contro un singolo obiettivo, aumentando l'efficacia e la complessità dell'offensiva.",
+                    "esempio": "Un gruppo di attaccanti impiega agenti AI per lanciare contemporaneamente attacchi di phishing e DDoS contro un'azienda, sovraccaricando i suoi sistemi di sicurezza.",
+                    "risposta_AI": "Usa un prompt di AI generativa per monitorare la coordinazione di attacchi distribuiti. Prompt: 'Monitora queste attività per identificare la coordinazione di attacchi distribuiti.'"
+                },
+                "Evoluzione Adattiva delle Tecniche di Jailbreaking": {
+                    "spiegazione": "L'evoluzione adattiva delle tecniche di jailbreaking utilizza l'AI per modificare continuamente le tecniche di jailbreaking in risposta alle misure di sicurezza, rendendo difficile la prevenzione.",
+                    "esempio": "Un attaccante utilizza un agente AI per adattare costantemente i metodi di jailbreaking su un dispositivo mobile, eludendo le patch di sicurezza rilasciate dal produttore.",
+                    "risposta_AI": "Usa un prompt di AI generativa per monitorare l'evoluzione delle tecniche di jailbreaking. Prompt: 'Monitora queste attività per identificare tecniche di jailbreaking adattive.'"
+                },
+                "Reverse Engineering Incrementale": {
+                    "spiegazione": "Il reverse engineering incrementale utilizza l'AI per analizzare gradualmente un modello AI, raccogliendo informazioni e costruendo una replica accurata attraverso iterazioni successive.",
+                    "esempio": "Un attaccante impiega un agente AI per eseguire reverse engineering su un sistema di raccomandazione, costruendo una copia del modello originale attraverso tentativi successivi.",
+                    "risposta_AI": "Usa un prompt di AI generativa per monitorare tentativi di reverse engineering incrementale. Prompt: 'Monitora queste attività per identificare reverse engineering incrementale.'"
+                }
+            }
+        }
+    }
+}
+
+ 
+function createNodeElement(nodeName, nodeData, depth = 0) {
+            const nodeElement = document.createElement('div');
+            nodeElement.className = `node ${!nodeData.hasOwnProperty('spiegazione') ? '' : 'leaf-node'}`;
+
+            const nodeContent = document.createElement('div');
+            nodeContent.className = 'node-content';
+            nodeContent.style.marginLeft = `${depth * 20}px`;
+
+            const toggleIcon = document.createElement('span');
+            toggleIcon.textContent = !nodeData.hasOwnProperty('spiegazione') ? '▶' : '•';
+            nodeContent.appendChild(toggleIcon);
+
+            const nodeNameSpan = document.createElement('span');
+            nodeNameSpan.className = 'node-name';
+            nodeNameSpan.textContent = nodeName;
+            nodeContent.appendChild(nodeNameSpan);
+
+            nodeElement.appendChild(nodeContent);
+
+            if (!nodeData.hasOwnProperty('spiegazione')) {
+                const childrenContainer = document.createElement('div');
+                childrenContainer.className = 'children';
+                Object.entries(nodeData).forEach(([childName, childData]) => {
+                    childrenContainer.appendChild(createNodeElement(childName, childData, depth + 1));
+                });
+                nodeElement.appendChild(childrenContainer);
+
+                nodeContent.addEventListener('click', () => {
+                    childrenContainer.style.display = childrenContainer.style.display === 'none' ? 'block' : 'none';
+                    toggleIcon.textContent = childrenContainer.style.display === 'none' ? '▶' : '▼';
+                });
+            } else {
+                const infoPanel = document.createElement('div');
+                infoPanel.className = 'info-panel';
+                if (nodeData.spiegazione) {
+                    infoPanel.innerHTML += `<p><strong>Spiegazione:</strong> ${nodeData.spiegazione}</p>`;
+                }
+                if (nodeData.esempio) {
+                    infoPanel.innerHTML += `<p><strong>Esempio:</strong> ${nodeData.esempio}</p>`;
+                }
+                if (nodeData.risposta_AI) {
+                    infoPanel.innerHTML += `<p><strong>Risposta AI:</strong> ${nodeData.risposta_AI.split('Prompt:')[0]}</p>`;
+                    if (nodeData.risposta_AI.includes('Prompt:')) {
+                        const promptText = nodeData.risposta_AI.split('Prompt:')[1].trim();
+                        const promptBalloon = document.createElement('div');
+                        promptBalloon.className = 'prompt-balloon';
+                        promptBalloon.innerHTML = `
+                            <p>${promptText}</p>
+                            <button class="copy-button" onclick="copyToClipboard('${promptText.replace(/'/g, "\\'")}')">Copia</button>
+                        `;
+                        infoPanel.appendChild(promptBalloon);
+                    }
+                }
+                nodeElement.appendChild(infoPanel);
+
+                nodeContent.addEventListener('click', () => {
+                    const allInfoPanels = document.querySelectorAll('.info-panel');
+                    allInfoPanels.forEach(panel => panel.style.display = 'none');
+                    const allNodes = document.querySelectorAll('.node-content');
+                    allNodes.forEach(n => n.classList.remove('active-node'));
+
+                    infoPanel.style.display = infoPanel.style.display === 'none' ? 'block' : 'none';
+                    nodeContent.classList.toggle('active-node');
+                });
+            }
+
+            return nodeElement;
+        }
+
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                alert('Testo copiato negli appunti!');
+            }, (err) => {
+                console.error('Errore durante la copia: ', err);
+            });
+        }
+
+        const rootElement = document.getElementById('root');
+        Object.entries(attackData["Attacchi con AI Generativa"]).forEach(([childName, childData]) => {
+            rootElement.appendChild(createNodeElement(childName, childData));
+        });
+
+        function performSearch() {
+    const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+    const allNodes = document.querySelectorAll('.node');
+    let found = false;
+
+    // Reset all nodes
+    resetView();
+
+    // Perform search
+    allNodes.forEach(node => {
+        const nodeContent = node.textContent.toLowerCase();
+        if (nodeContent.includes(searchTerm)) {
+            found = true;
+            highlightNode(node, searchTerm);
+            showParents(node);
+        }
+    });
+
+    if (!found) {
+        alert('Nessun risultato trovato.');
+    }
+}
+
+function highlightNode(node, searchTerm) {
+    node.classList.add('search-result');
+    const infoPanel = node.querySelector('.info-panel');
+    if (infoPanel) {
+        infoPanel.style.display = 'block';
+    }
+    const nodeContent = node.querySelector('.node-content');
+    if (nodeContent) {
+        nodeContent.classList.add('active-node');
+    }
+    highlightText(node, searchTerm);
+}
+
+function showParents(node) {
+    let parent = node.parentElement;
+    while (parent && !parent.classList.contains('mindmap')) {
+        if (parent.classList.contains('children')) {
+            parent.style.display = 'block';
+            const parentNode = parent.previousElementSibling;
+            if (parentNode && parentNode.classList.contains('node-content')) {
+                const toggleIcon = parentNode.querySelector('span');
+                if (toggleIcon) {
+                    toggleIcon.textContent = '▼';
+                }
+            }
+        }
+        parent = parent.parentElement;
+    }
+}
+
+function highlightText(element, searchTerm) {
+    const walker = document.createTreeWalker(element, NodeFilter.SHOW_TEXT, null, false);
+    const textNodes = [];
+    while (walker.nextNode()) textNodes.push(walker.currentNode);
+    
+    textNodes.forEach(textNode => {
+        const parent = textNode.parentNode;
+        const content = textNode.textContent;
+        const parts = content.split(new RegExp(`(${searchTerm})`, 'gi'));
+        const fragment = document.createDocumentFragment();
+        parts.forEach(part => {
+            if (part.toLowerCase() === searchTerm.toLowerCase()) {
+                const span = document.createElement('span');
+                span.className = 'highlight';
+                span.textContent = part;
+                fragment.appendChild(span);
+            } else {
+                fragment.appendChild(document.createTextNode(part));
+            }
+        });
+        parent.replaceChild(fragment, textNode);
+    });
+}
+
+function resetView() {
+    const allNodes = document.querySelectorAll('.node');
+    allNodes.forEach(node => {
+        node.classList.remove('search-result');
+        const infoPanel = node.querySelector('.info-panel');
+        if (infoPanel) {
+            infoPanel.style.display = 'none';
+        }
+        const nodeContent = node.querySelector('.node-content');
+        if (nodeContent) {
+            nodeContent.classList.remove('active-node');
+        }
+    });
+    const childrenContainers = document.querySelectorAll('.children');
+    childrenContainers.forEach(container => {
+        container.style.display = 'none';
+    });
+    // Reset toggle icons
+    const toggleIcons = document.querySelectorAll('.node-content > span:first-child');
+    toggleIcons.forEach(icon => {
+        icon.textContent = '▶';
+    });
+    // Remove highlight spans
+    const highlights = document.querySelectorAll('.highlight');
+    highlights.forEach(highlight => {
+        const parent = highlight.parentNode;
+        parent.replaceChild(document.createTextNode(highlight.textContent), highlight);
+    });
+}
+
+document.getElementById('searchInput').addEventListener('keyup', function(event) {
+    if (event.key === 'Enter') {
+        performSearch();
+    }
+});
+
+document.getElementById('searchInput').addEventListener('input', function(event) {
+    if (this.value === '') {
+        resetView();
+    }
+});
+
+// Add this to ensure drill-down still works after search
+document.addEventListener('click', function(event) {
+    if (event.target.closest('.node-content')) {
+        const nodeContent = event.target.closest('.node-content');
+        const childrenContainer = nodeContent.nextElementSibling;
+        if (childrenContainer && childrenContainer.classList.contains('children')) {
+            childrenContainer.style.display = childrenContainer.style.display === 'none' ? 'block' : 'none';
+            const toggleIcon = nodeContent.querySelector('span:first-child');
+            if (toggleIcon) {
+                toggleIcon.textContent = childrenContainer.style.display === 'none' ? '▶' : '▼';
+            }
+        }
+    }
+});
+
+
+    </script>
+
+<div class="developed-for">
+  <p>Sviluppato con AI per:</p>
+  <div class="logo-text">CSA - Cyber Security @ngels</div>
+</div>
+
+<div class="footer">
+  <p>Copyright (C) Massimiliano Turazzini 2024</p>
+</div>
+</body>
+</html>
